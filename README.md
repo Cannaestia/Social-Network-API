@@ -16,6 +16,10 @@ This application keeps track of users, their friends, post and responses to thos
 ## Visuals
 
 
+https://user-images.githubusercontent.com/108596767/197414461-8f732ad4-65dc-4606-a5fb-3acd75761e19.mp4
+
+
+
 ## Installation
 Before using the application do a npm install and then run nodemon.
       
