@@ -1,10 +1,9 @@
 const router = require('express').Router();
-const { model } = require('mongoose');
-const thoughtRoutes = require ('./thoughtRoutes');
-const userRoutes = require('./userRoutes.js');
+const userRoutes = require('./userRoutes');
+const thoughtRoutes = require('./thoughtRoutes');
 
-router.use('/thoughts', thoughtRoutes);
 router.use('/users', userRoutes);
+router.use('/thoughts', thoughtRoutes);
 
-model.exports = router;
+module.exports = router;
 

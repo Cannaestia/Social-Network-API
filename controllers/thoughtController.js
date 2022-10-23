@@ -1,5 +1,5 @@
-const Thought = require("../models");
-const User = require("../models/User");
+const { Thought, User } = require("../models");
+
 
 module.exports = {
   // GET to get all thoughts
@@ -11,20 +11,21 @@ module.exports = {
   // GET to get a single thought by it's _id:
   getSingleThought(req, res) {
     Thought.findOne({ _id: req.params.thoughtId })
-      .select("-__v")
-      .then((thoughts) =>
-        !user
-          ? res.status(404).json({ message: "No thought with that ID" })
-          : res.json(thoughts)
+      .select('-__v')
+      .then((thought) =>
+        !thought
+          ? res.status(404).json({ message: 'No thought with that ID' })
+          : res.json(thought)
       )
       .catch((err) => res.status(500).json(err));
+      
   },
   // POST to create a new thought
   createThought(req, res) {
     Thought.create(req.body)
       .then((thoughts) => {
         return User.findOneAndUpdate(
-          { _id: req.body.userId },
+          { username: req.body.username },
           { $push: { thoughts: thoughts._id } },
           { new: true }
         );
@@ -33,7 +34,7 @@ module.exports = {
         !post
           ? res
               .status(404)
-              .json({ message: "thought created, but no post with this ID" })
+              .json({ message: "thought created, but no user found with that username" })
           : res.json({ message: "thought created" })
       );
   },
@@ -89,22 +90,18 @@ module.exports = {
       )
       .catch((err) => res.status(500).json(err));
   },
-// DELETE to pull and remove a reaction by the reaction's reactionId value
-removeReaction(req, res) {
-  Thought.findOneAndUpdate(
-    { _id: req.params.thoughtId },
-    { $pull: { reactions: { tagId: req.params.reactionsId } } },
-    { runValidators: true, new: true }
-  )
-    .then((thought) =>
-      !thought
-        ? res.status(404).json({ message: 'No thought with this id!' })
-        : res.json(thought)
+  // DELETE to pull and remove a reaction by the reaction's reactionId value
+  removeReaction(req, res) {
+    Thought.findOneAndUpdate(
+      { _id: req.params.thoughtId },
+      { $pull: { reactions: { tagId: req.params.reactionsId } } },
+      { runValidators: true, new: true }
     )
-    .catch((err) => res.status(500).json(err));
-},
+      .then((thought) =>
+        !thought
+          ? res.status(404).json({ message: "No thought with this id!" })
+          : res.json(thought)
+      )
+      .catch((err) => res.status(500).json(err));
+  },
 };
-
-
-
-

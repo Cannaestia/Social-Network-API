@@ -1,7 +1,34 @@
 const { Schema, model, Types } = require("mongoose");
-const reaction = require("./Reaction");
+// Subdocument
+const reactionSchema = new Schema(
+  {
+    reactionId: {
+      type: Schema.Types.ObjectId,
+      default: () => new Types.ObjectId(),
+    },
+    reactionBody: {
+      type: String,
+      required: true,
+      max_length: 280,
+    },
+    username: {
+      type: String,
+      required: true,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+  },
+  {
+    toJSON: {
+      getters: true,
+    },
+    id: false,
+  }
+);
 
-const thoughtSchema = new Schmea(
+const thoughtSchema = new Schema(
   {
     thoughtText: {
       type: String,
@@ -12,9 +39,6 @@ const thoughtSchema = new Schmea(
     creditAt: {
       type: Date,
       defualt: Date.now,
-      get: (date) => {
-        return new Date(date).toLocaleDateString();
-      },
     },
     username: {
       type: String,
@@ -37,36 +61,6 @@ thoughtSchema.virtual("reactionCount").get(function () {
 
 const Thought = model("Thought", thoughtSchema);
 
-const reactionSchema = new Schema(
-  {
-    reactionId: {
-      type: Schema.Types.ObjectId,
-      default: () => new Types.ObjectId(),
-    },
-    reactionBody: {
-      type: String,
-      required: true,
-      max_length: 280,
-    },
-    username: {
-      type: String,
-      required: true,
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-      get: (date) => {
-        return new Date(date).toLocaleDateString();
-      },
-    },
-  },
-  {
-    toJSON: {
-      getters: true,
-    },
-    id: false,
-  }
-);
 
 module.exports = reactionSchema;
 
