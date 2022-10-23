@@ -1,5 +1,5 @@
-const { Schema, model } = require('mongoose');
-const thought = require('./Thought');
+const { Schema, model } = require("mongoose");
+const thought = require("./Thought");
 
 const userSchema = new Schema(
   {
@@ -13,32 +13,39 @@ const userSchema = new Schema(
       type: String,
       required: true,
       unique: true,
-      validate: [validateEmail, 'Please fill a valid email address'],
-        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']  
-        // Found at https://stackoverflow.com/questions/18022365/mongoose-validate-email-syntax
+      validate: [validateEmail, "Please fill a valid email address"],
+      match: [
+        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+        "Please fill a valid email address",
+      ],
+      // Found at https://stackoverflow.com/questions/18022365/mongoose-validate-email-syntax
     },
-    thoughts: [{
-      type: Schema.Types.ObjectId,
-      ref: "Thought"
-    }],
-    friends: [{
-      type: Schema.Types.ObjectId,
-      ref: "User"
-    }],
-    },
-    {
-      toJSON: {
-        virtuals: true,
-        getters: true,
+    thoughts: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Thought",
       },
-      id: false,
-    }
+    ],
+    friends: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+  },
+  {
+    toJSON: {
+      virtuals: true,
+      getters: true,
+    },
+    id: false,
+  }
 );
 
-userSchema.virtual('friendCount').get(function() {
+userSchema.virtual("friendCount").get(function () {
   return this.friends.length;
 });
 
-const User = model('User', newSchema)
+const User = model("User", newSchema);
 
 module.exports = User;

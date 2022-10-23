@@ -1,5 +1,5 @@
-const { Schema, model, Types } = require('mongoose');
-const reaction = require('./Reaction');
+const { Schema, model, Types } = require("mongoose");
+const reaction = require("./Reaction");
 
 const thoughtSchema = new Schmea(
   {
@@ -12,7 +12,7 @@ const thoughtSchema = new Schmea(
     creditAt: {
       type: Date,
       defualt: Date.now,
-      get : (date) => {
+      get: (date) => {
         return new Date(date).toLocaleDateString();
       },
     },
@@ -28,16 +28,14 @@ const thoughtSchema = new Schmea(
       virtuals: true,
     },
     id: false,
-    
   }
-  );
-  
-  
-thoughtSchema.virtual('reactionCount').get(function() {
-    return this.reactions.length;
-  });
-  
-  const Thought = model('Thought', thoughtSchema);
+);
+
+thoughtSchema.virtual("reactionCount").get(function () {
+  return this.reactions.length;
+});
+
+const Thought = model("Thought", thoughtSchema);
 
 const reactionSchema = new Schema(
   {
@@ -59,8 +57,8 @@ const reactionSchema = new Schema(
       default: Date.now,
       get: (date) => {
         return new Date(date).toLocaleDateString();
-      }
-    }
+      },
+    },
   },
   {
     toJSON: {
@@ -70,6 +68,6 @@ const reactionSchema = new Schema(
   }
 );
 
-module.exports = reactionSchema
+module.exports = reactionSchema;
 
 module.exports = Thought;
